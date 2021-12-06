@@ -15,17 +15,31 @@ void swap(int *num1, int *num2){
     *num1 = *num1-*num2;
 }
 
+int get_pivot(int *arr, int low, int high){
+    int mid = (low+high)/2;
+    if(arr[low]>arr[mid])
+        swap(&arr[low], &arr[mid]);
+    if(arr[low]>arr[high-1])
+        swap(&arr[low], &arr[high]);
+    if(arr[mid]>arr[high-1])
+        swap(&arr[mid], &arr[high]);
+    return arr[mid];
+}
+
 int partition(int *arr, int low, int high){
     int pivot = arr[low];
-    int left = low;
-    for(int i=low+1; i<high; i++){
-        if(arr[i]<pivot){
-            swap(&arr[i], &arr[left]);
-            left++;
-        }
+    int i = low, j = high;
+    while(i<j){
+        while(arr[i]<=pivot)
+            i++;
+        while(arr[j]>pivot)
+            j--;
+        if(i<j)
+            swap(&arr[i], &arr[j]);
     }
-    swap(&arr[low], &arr[left]);
-    return left;
+    if(low!=j)
+        swap(&arr[low], &arr[j]);
+    return j;
 }
 
 
@@ -41,14 +55,15 @@ void quick_sort(int *arr, int low, int high){
 
 
 int main(){
-    int arr[5] = {3, 2, 5, 1, 4};
+    int arr[] = {8, 7, 9, 10, 15, 13, 5, 1, 6, 2, 3};
+    
 
-    print_arr(arr, 5);
+    print_arr(arr, 11);
 
-    quick_sort(arr, 0, 5);
+    quick_sort(arr, 0, 11);
     printf("\n");
 
-    print_arr(arr, 5);
+    print_arr(arr, 11);
 
     return 0;
 }
